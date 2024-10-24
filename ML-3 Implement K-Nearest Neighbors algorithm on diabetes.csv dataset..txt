@@ -1,0 +1,78 @@
+ML-3 Implement K-Nearest Neighbors algorithm on diabetes.csv dataset. (diabetes.csv)
+
+
+...Importing the libraries.....
+
+import pandas as pd
+import numpy as np
+from sklearn.preprocessing import StandardScaler
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import confusion_matrix, accuracy_score, precision_score, recall_score
+
+....Import the dataset....
+
+df = pd.read_csv("diabetes.csv")
+df.head()
+
+.....Preprocess the dataset......
+
+df.info()
+df.shape
+df.columns
+df.describe()
+
+df.isna().sum()
+
+# Features and target variable
+X = df.drop('Outcome', axis=1)
+y = df['Outcome']
+
+df.head()
+
+# Split the dataset into training and testing sets
+from sklearn.model_selection import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+
+# Normalize the features
+scaler = StandardScaler()
+X_train_scaled = scaler.fit_transform(X_train)
+X_test_scaled = scaler.transform(X_test)
+
+# Initialize and train KNN classifier
+k = 5
+knn = KNeighborsClassifier(n_neighbors=k)
+knn.fit(X_train_scaled, y_train)
+
+# Predict on the test set
+y_pred = knn.predict(X_test_scaled)
+
+# Compute evaluation metrics
+conf_matrix = confusion_matrix(y_test, y_pred)
+accuracy = accuracy_score(y_test, y_pred)
+error_rate = 1 - accuracy
+precision = precision_score(y_test, y_pred)
+recall = recall_score(y_test, y_pred)
+
+# Print metrics
+print("Confusion Matrix:")
+print(conf_matrix)
+
+print("Accuracy:", accuracy)
+print("Error Rate:", error_rate)
+print("Precision:", precision)
+print("Recall:", recall)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
